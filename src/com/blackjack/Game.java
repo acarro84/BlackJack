@@ -29,6 +29,7 @@ public class Game {
 	private Player player;
 	private House house;
 	private Deck deck;
+	int bet;
 
 	public Game() {
 		this.scanner = new Scanner(System.in);
@@ -85,8 +86,8 @@ public class Game {
 		System.out.println("Your earnings: $" + player.getEarnings());
 	}
 
-	private int placeBet() {
-		int bet = 0;
+	public int placeBet() {
+		bet = 0;
 		boolean validBet = false;
 
 		while (!validBet) {
@@ -120,7 +121,7 @@ public class Game {
 		System.out.println("House cards: " + house.getHand().get(0) + " and [Hidden]");
 	}
 
-	private void playerTurn() {
+	public void playerTurn() {
 		while (true) {
 			System.out.print("Do you want to hit or stay? (h/s): ");
 			String choice = scanner.nextLine();
@@ -172,11 +173,11 @@ public class Game {
             writeGameData(player.getName(), "Loss");
         } else if (houseHandValue > BLACKJACK_VALUE) {
             System.out.println(WIN_MESSAGE);
-            player.setEarnings(player.getEarnings() + 2 * BET_MIN);
+            player.setEarnings(player.getEarnings() + 2 * bet);
             writeGameData(player.getName(), "Win");
         } else if (playerHandValue > houseHandValue) {
             System.out.println(WIN_MESSAGE);
-            player.setEarnings(player.getEarnings() + 2 * BET_MIN);
+            player.setEarnings(player.getEarnings() + 2 * bet);
             writeGameData(player.getName(), "Win");
         } else if (playerHandValue < houseHandValue) {
             System.out.println(LOSE_MESSAGE);
@@ -189,7 +190,7 @@ public class Game {
     }
      private void writeGameData(String playerName, String result) {
             try {
-                String fileName = "game_data.txt";
+                String fileName = "src\\game_data.txt";
                 File file = new File(fileName);
                 FileWriter writer = new FileWriter(file, true);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
