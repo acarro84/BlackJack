@@ -37,6 +37,8 @@ public class Game {
 		this.house = new House();
 		this.deck = new Deck();
 		deck.shuffle();
+		
+		
 	}
 
 	public void start() {
@@ -78,9 +80,12 @@ public class Game {
 			System.out.println("Blackjack! You win!");
 			player.setEarnings(player.getEarnings() + (int) (bet * 1.5));
 		} else {
-			playerTurn();
-			houseTurn();
-			determineWinner();
+			boolean flag = insurance();
+			if (!flag) {
+				playerTurn();
+				houseTurn();
+				determineWinner();
+			}
 		}
 
 		System.out.println("Your earnings: $" + player.getEarnings());
@@ -120,6 +125,21 @@ public class Game {
 		System.out.println("Your cards: " + player.getHand());
 		System.out.println("House cards: " + house.getHand().get(0) + " and [Hidden]");
 	}
+	public boolean insurance() {
+		if(house.getHand().get(0).getValue() == Card.Value.ACE) {
+			System.out.println("Would you like to purchase insurance for the dealer's Ace?");
+			if (scanner.nextLine().toLowerCase().contains("y")) {
+				player.setEarnings(player.getEarnings() - bet/2);
+				if (house.calculateHandValue() == 21) {
+					player.setEarnings(player.getEarnings() + bet);
+					System.out.println("Dealer had Black Jack. Your insurance bet was returned.");
+					return true;
+				} 
+			}
+		} return false;
+	}
+	
+	
 
 	public void playerTurn() {
 		while (true) {

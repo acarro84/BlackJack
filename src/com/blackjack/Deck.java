@@ -19,7 +19,10 @@ public class Deck {
             }
         }
     }
-
+    public void createScenario() {
+    	cards.set(1, new Card(Card.Suit.CLUBS, Card.Value.ACE));
+    	cards.set(3, new Card(Card.Suit.CLUBS, Card.Value.NINE));
+    }
     public void shuffle() {
         Collections.shuffle(cards, random);
     }
